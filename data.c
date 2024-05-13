@@ -93,7 +93,7 @@ void delTeams(TeamList **list, int *numar)
 
     if(twoPower(*numar))
     {
-        printf("lista contine deja un numar de echipe, care este multiplu de doi\n");
+        printf("lista contine deja un numar de echipe, care este putere a lui doi\n");
         return;
     }
 
