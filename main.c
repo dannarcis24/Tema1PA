@@ -58,10 +58,31 @@ int main(int argc, char *argv[])
 {
     errorInput(argc, argv);
     int *task = taskInput(argv[1]);
-
     TeamList *lista_echipe = NULL;
-    task1(&lista_echipe, argv);
+    int numar_echipe = -1;
 
+    for(register int i = 0; i < 5; i++)
+        if(task[i])
+            switch(i)
+            {
+                case 0:
+                    task1(&lista_echipe, &numar_echipe, argv);
+                    break;
+                case 1:
+                    task2(&lista_echipe, &numar_echipe, argv);
+                    break;
+                // case 2:
+                //     task3();
+                //     break;
+                // case 3:
+                //     task4();
+                //     break;
+                // case 4:
+                //     task5();
+                //     break;
+            }
+
+    free(task);
     delTeamList(&lista_echipe);
     return 0;
 }
