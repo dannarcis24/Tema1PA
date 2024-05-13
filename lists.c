@@ -73,7 +73,7 @@ Team* createTeam()
 
     nod->nume_echipa = NULL;
     nod->lista_concurenti = NULL;
-    nod->numar_concurenti = -1;
+    nod->numar_concurenti = nod->punctaj_echipa = -1;
 
     return nod;
 }
@@ -105,6 +105,34 @@ void addTeam(TeamList **list, Team *elem)
     nod->echipa = elem;
     nod->next = *list;
     *list = nod;
+}
+
+void delTeamPoints(TeamList **list, float punctaj)
+{
+    if((*list)->echipa->punctaj_echipa == punctaj)
+    {
+        TeamList *p = *list;
+        *list = p->next;
+        p->next = NULL;
+        delTeamList(&p);
+        
+        return;
+    }
+
+    TeamList *p;
+    for(p = *list; p->next; p = p->next)
+        if(p->next->echipa->punctaj_echipa == punctaj)
+        {
+            TeamList *q = p->next;
+            p->next = q->next;
+            q->next = NULL;
+            delTeamList(&q);
+
+            return;
+        }
+    
+    if(p->echipa->punctaj_echipa == punctaj)
+        delTeamList(&p);
 }
 
 void delTeamList(TeamList **list)
