@@ -47,7 +47,7 @@ TeamList* Input(char*, int*);
 void writeTeams(TeamList*, char*);
 void delTeams(TeamList**, int*);
 
-// APELURI PENTRU FUNCTII CU DIVERE CALCULE
+// APELURI PENTRU FUNCTII CU DIVERSE CALCULE
 int sumPoints(PlayerList*);
 int twoPower(int);
 void minimum(TeamList*, float*);
