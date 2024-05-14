@@ -5,17 +5,22 @@
 typedef struct c{
     TeamList *echipa;
     struct c *next;
-} Stack;
+} Node;
 
 typedef struct d{
-    TeamList *first, *last;
+    Node *first, *last;
 } Queue;
 
 // APELURI PENTRU FUNCTII DE GESTIONARE A UNEI STIVE
 //        (creare, adaugare, extragere, stergere)
-Stack* createStack();
-void push(Stack**, TeamList*);
-TeamList* pop(Stack**);
-void delStack(Stack**);
+Node* createNode();
+void push(Node**, TeamList*);
+TeamList* pop(Node**);
+void delStack(Node**);
 
 // APELURI PENTRU FUNCTII DE GESTIONARE A UNEI COZI
+//        (creare, adaugare, extragere, stergere)
+Queue* createQueue();
+void enQueue(Queue*, TeamList*);
+TeamList* deQueue(Queue*);
+void delQueue(Queue**);
