@@ -92,10 +92,7 @@ void delTeams(TeamList **list, int *numar)
         p->echipa->punctaj_echipa = 1.* sumPoints(p->echipa->lista_concurenti)/p->echipa->numar_concurenti;
 
     if(twoPower(*numar))
-    {
-        printf("lista contine deja un numar de echipe, care este putere a lui doi\n");
         return;
-    }
 
     while(!twoPower(*numar))
     {
