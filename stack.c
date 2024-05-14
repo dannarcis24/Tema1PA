@@ -1,7 +1,7 @@
 #include "structs.h"
-Stack* createStack()
+Node* createNode()
 {
-    Stack *nod = (Stack*)malloc(sizeof(Stack));
+    Node *nod = (Node*)malloc(sizeof(Node));
     if(!nod)
     {
         printf("variabilei nod nu i s-a putut aloca memorie");
@@ -14,22 +14,22 @@ Stack* createStack()
     return nod;
 }
 
-void push(Stack **stiva, TeamList *elem)
+void push(Node **stiva, TeamList *elem)
 {
-    Stack *nod = createStack();
+    Node *nod = createNode();
     nod->echipa = elem;
     nod->next = *stiva;
     *stiva = nod;
 }
 
-TeamList* pop(Stack **stiva)
+TeamList* pop(Node **stiva)
 {
     if(!(*stiva))
         return NULL;
 
     TeamList *nod = (*stiva)->echipa;
 
-    Stack* p = *stiva;
+    Node* p = *stiva;
     *stiva = (*stiva)->next;
     p->next = NULL;
     free(p);
@@ -37,7 +37,7 @@ TeamList* pop(Stack **stiva)
     return nod;
 }
 
-void delStack(Stack **stiva)
+void delStack(Node **stiva)
 {
     if(!(*stiva))
         return;
