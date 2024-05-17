@@ -1,22 +1,19 @@
 #include "tasks.h"
 char *readString(FILE *f, int ok)
 {
-    char c;
-    int k = 0;
-
-    char *sir = (char *)malloc(sizeof(char));
+    char c, *sir = (char *)malloc(sizeof(char));
     if (!sir)
     {
         printf("variabilei sir nu i s-a putut aloca memorie\n");
         exit(1);
     }
-
+    int k = 0;
+    
     fscanf(f, "%c", &c);
-    while ((ok == 1 && c != '\n') || (ok == 0 && c != ' '))
-    {
+    while ((ok == 1 && c != '\r') || (ok == 0 && c != ' ')) // acel '\r' mi-a mancat zilele :((((((
+    {   
         sir[k++] = c;
         fscanf(f, "%c", &c);
-
         sir = (char *)realloc(sir, sizeof(char) * (k + 1));
         if (!sir)
         {
@@ -28,6 +25,16 @@ char *readString(FILE *f, int ok)
             break;
     }
     sir[k] = '\0';
+    if(sir[strlen(sir)-1] == ' ')
+    {
+        sir[--k] = '\0';
+        sir = (char *)realloc(sir, sizeof(char) * (k + 1));
+        if (!sir)
+        {
+            printf("variabilei sir nu i s-a putut realoca memorie\n");
+            exit(1);
+        }
+    }
 
     return sir;
 }
@@ -52,6 +59,7 @@ TeamList *Input(char *fisier, int *numar_echipe)
         fscanf(f, "%d", &grup->numar_concurenti);
         fseek(f, 1L, SEEK_CUR);
         grup->nume_echipa = readString(f, 1);
+        fseek(f, 1L, SEEK_CUR);
 
         for (register int j = 0; j < grup->numar_concurenti; j++)
         {
@@ -82,7 +90,7 @@ void writeTeams(TeamList *list, char *fisier)
 
     for(register TeamList* p = list; p; p = p->next)
         fprintf(f, "%s\n", p->echipa->nume_echipa);
-        
+
     fclose(f);
 }
 
@@ -130,5 +138,5 @@ void delTeams(TeamList **list, int *numar)
 
         delTeamPoints(list, mi);
         (*numar)--;
-    }   
+    }
 }
