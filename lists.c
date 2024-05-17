@@ -46,6 +46,9 @@ void addPlayer(PlayerList **list, Player *elem)
 
 void delPLayerList(PlayerList **list)
 {
+    if(*list == NULL)
+        return;
+
     PlayerList *p = *list;
     while(p)
     {
@@ -122,7 +125,7 @@ void delTeamPoints(TeamList **list, float punctaj)
         TeamList *p = *list;
         *list = p->next;
         p->next = NULL;
-        delTeamList(&p);
+        delTeamList(&p, 1);
         
         return;
     }
@@ -134,26 +137,31 @@ void delTeamPoints(TeamList **list, float punctaj)
             TeamList *q = p->next;
             p->next = q->next;
             q->next = NULL;
-            delTeamList(&q);
+            delTeamList(&q, 1);
 
             return;
         }
     
     if(p->echipa->punctaj_echipa == punctaj)
-        delTeamList(&p);
+        delTeamList(&p, 1);
 }
 
-void delTeamList(TeamList **list)
+void delTeamList(TeamList **list, int ok)
 {
     TeamList *p = *list;
+
     while(p)
     {
         TeamList *q = p->next;
 
-        delPLayerList(&p->echipa->lista_concurenti);
+        if(ok)
+            delPLayerList(&p->echipa->lista_concurenti);
+        else
+            p->echipa->lista_concurenti = NULL;
+        free(p->echipa->nume_echipa);
         free(p->echipa);
         free(p);
-        
+
         p = q;
     }
 
