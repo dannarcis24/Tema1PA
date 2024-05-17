@@ -107,6 +107,14 @@ void addTeam(TeamList **list, Team *elem)
     *list = nod;
 }
 
+void copyTeam(TeamList **list, Team *elem)
+{
+    Team *nod = createTeam();
+    *nod = *elem;
+
+    addTeam(list, nod);
+}
+
 void delTeamPoints(TeamList **list, float punctaj)
 {
     if((*list)->echipa->punctaj_echipa == punctaj)
