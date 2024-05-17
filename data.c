@@ -44,7 +44,7 @@ TeamList *Input(char *fisier, int *numar_echipe)
     FILE *f = fopen(fisier, "rt");
     if (!f)
     {
-        printf("fisierul d.in nu s-a putut deschide\n");
+        printf("fisierul %s nu s-a putut deschide\n", fisier);
         exit(1);
     }
 
@@ -84,7 +84,7 @@ void writeTeams(TeamList *list, char *fisier)
     FILE *f = fopen(fisier, "wt");
     if(!f)
     {
-        printf("fisierul r.out nu s-a putut deschide");
+        printf("fisierul %s nu s-a putut deschide", fisier);
         exit(1);
     }
 
