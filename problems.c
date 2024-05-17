@@ -67,9 +67,9 @@ void writeWinners(Node *list, int runda, char *fisier)
 }
 
 
-Node* top8(TeamList* list, int numar, char *argv[])
+TeamList* top8(TeamList* list, int numar, char *argv[])
 {
-    Node* lista_finala = NULL;
+    TeamList* lista_finala = createTeamList();
     Queue *q = createQueue();
     int runda = 1;
 
@@ -90,7 +90,7 @@ Node* top8(TeamList* list, int numar, char *argv[])
         {
             enQueue(q, p->echipa);
             if(numar == 8)
-                push(&lista_finala, p->echipa);
+                copyTeam(&lista_finala, p->echipa->echipa);
         }
 
         runda++;
