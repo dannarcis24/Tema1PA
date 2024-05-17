@@ -40,7 +40,7 @@ void addTeam(TeamList**, Team*);
 void copyTeam(TeamList**, Team*);
 void delTeamPoints(TeamList**, float);
 void delPlayerTeam(PlayerList**);
-void delTeamList(TeamList**);
+void delTeamList(TeamList**, int);
 
 // APELURI PENTRU ALTE FUNCTII
 //        (generarea listei principale, afisarea echipelor)
