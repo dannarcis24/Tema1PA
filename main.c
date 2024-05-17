@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
     errorInput(argc, argv);
     int *task = taskInput(argv[1]);
     TeamList *lista_echipe = NULL;
+    Node *lista_finala = NULL;
     int numar_echipe = -1;
 
     for(register int i = 0; i < 5; i++)
@@ -71,9 +72,9 @@ int main(int argc, char *argv[])
                 case 1:
                     task2(&lista_echipe, &numar_echipe, argv);
                     break;
-                // case 2:
-                //     task3();
-                //     break;
+                case 2:
+                    task3(lista_echipe, &lista_finala, numar_echipe, argv);
+                    break;
                 // case 3:
                 //     task4();
                 //     break;
@@ -83,6 +84,7 @@ int main(int argc, char *argv[])
             }
 
     free(task);
+    delStack(&lista_finala);
     delTeamList(&lista_echipe);
     return 0;
 }
