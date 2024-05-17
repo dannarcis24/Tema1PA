@@ -12,7 +12,7 @@ typedef struct d{
 } Queue;
 
 typedef struct e{
-    Node *val;
+    TeamList *val;
     struct e *left, *right;
 } Tree;
 
@@ -33,8 +33,11 @@ void delQueue(Queue**);
 //APELURI PENTRU FUNCTII DE GESTIONARE A UNUI ARBORE BINAR
 //        (creare, creare BST, afisare, stergere)
 Tree* createTree();
-Tree* createBinarySearchTree(Node*);
-void writeTree(Tree*); // parcurgerea in inordine
+int verifOrd(Team*, Team*);
+void addInTree(Tree*, TeamList*);
+TeamList* whoIsRoot(TeamList*);
+Tree* createBinarySearchTree(TeamList*);
+void writeTree(Tree*, FILE*); // parcurgerea in inordine
 void delTree(Tree**);
 
 // APELURI PENTRU FUNCTII DE GESTIONARE A CONCURSULUI
@@ -43,4 +46,4 @@ void addPoints(Team*);
 void match(Queue**, Node**, Node**);
 void writeRound(Queue*, int, char*);
 void writeWinners(Node*, int, char*);
-Node* top8(TeamList*, int, char*[]);
+TeamList* top8(TeamList*, int, char*[]);
