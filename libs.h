@@ -30,13 +30,14 @@ typedef struct b{
 } TeamList;
 
 // APELURILE PENTRU FUNCTIILE DE LISTE INLANTUITE 
-//          (creare, adaugare la inceput, stergerea unui element, stergere)
+//          (creare, adaugare la inceput, copiere si adaugare la inceput, stergerea unui element, stergere)
 Player* createPlayer();
 PlayerList* createPlayerList();
 Team* createTeam();
 TeamList* createTeamList();
 void addPlayer(PlayerList**, Player*);
 void addTeam(TeamList**, Team*);
+void copyTeam(TeamList**, Team*);
 void delTeamPoints(TeamList**, float);
 void delPlayerTeam(PlayerList**);
 void delTeamList(TeamList**);
