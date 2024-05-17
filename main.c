@@ -29,7 +29,7 @@ int* taskInput(char *fisier)
     FILE *f = fopen(fisier, "rt");
     if(!f)
     {
-        printf("nu s-a putut deschide fisierul c.in\n");
+        printf("nu s-a putut deschide fisierul %s\n", fisier);
         exit(1);
     }
 
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
     free(task);
     delTree(&root);
-    delTeamList(&lista_finala);
-    delTeamList(&lista_echipe);
+    delTeamList(&lista_echipe, 1);
+    delTeamList(&lista_finala, 0);
     return 0;
 }
