@@ -13,7 +13,7 @@ typedef struct d{
 
 typedef struct e{
     int height;
-    TeamList *val;
+    void *val;
     struct e *left, *right;
 } Tree;
 
@@ -34,12 +34,11 @@ void delQueue(Queue**);
 //APELURI PENTRU FUNCTII DE GESTIONARE A UNUI ARBORE BINAR
 //        (creari nod/BST/AVL, verificari, calcularea inaltimii, adaugari, rotatii stanga/dreapta, afisari, stergere)
 Tree* createTree();
-Tree* createBinarySearchTree(TeamList*);
-void createAVL(Tree**); 
-void addInTree(Tree*, TeamList*);
+Tree* createBST(TeamList*);
+void createAVL(Tree **, Tree*);
+void addInBST(Tree*, TeamList*);
+Tree* addInAVL(Tree *, Tree*);
 int verifOrd(Team*, Team*);
-Tree* searchFather(Tree*, Tree*);
-Tree* isBalanced(Tree*);
 int height(Tree*);
 void calcHeight(Tree*);
 Tree* leftRotation(Tree*);
