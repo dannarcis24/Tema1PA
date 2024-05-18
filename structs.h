@@ -12,6 +12,7 @@ typedef struct d{
 } Queue;
 
 typedef struct e{
+    int height;
     TeamList *val;
     struct e *left, *right;
 } Tree;
@@ -35,9 +36,11 @@ void delQueue(Queue**);
 Tree* createTree();
 int verifOrd(Team*, Team*);
 void addInTree(Tree*, TeamList*);
-TeamList* whoIsRoot(TeamList*);
 Tree* createBinarySearchTree(TeamList*);
 void writeTree(Tree*, FILE*); // parcurgerea in inordine
+int height(Tree*);
+void calcHeight(Tree*);
+void createAVL(Tree**);
 void delTree(Tree**);
 
 // APELURI PENTRU FUNCTII DE GESTIONARE A CONCURSULUI
