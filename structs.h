@@ -32,15 +32,20 @@ TeamList* deQueue(Queue*);
 void delQueue(Queue**);
 
 //APELURI PENTRU FUNCTII DE GESTIONARE A UNUI ARBORE BINAR
-//        (creare, creare BST, afisare, stergere)
+//        (creari nod/BST/AVL, verificari, calcularea inaltimii, adaugari, rotatii stanga/dreapta, afisari, stergere)
 Tree* createTree();
-int verifOrd(Team*, Team*);
-void addInTree(Tree*, TeamList*);
 Tree* createBinarySearchTree(TeamList*);
-void writeTree(Tree*, FILE*); // parcurgerea in inordine
+void createAVL(Tree**); 
+void addInTree(Tree*, TeamList*);
+int verifOrd(Team*, Team*);
+Tree* searchFather(Tree*, Tree*);
+Tree* isBalanced(Tree*);
 int height(Tree*);
 void calcHeight(Tree*);
-void createAVL(Tree**);
+Tree* leftRotation(Tree*);
+Tree* rightRotation(Tree*);
+void writeTree(Tree*, FILE*); // parcurgerea in inordine
+void writeLevel2(Tree*, int, FILE*);
 void delTree(Tree**);
 
 // APELURI PENTRU FUNCTII DE GESTIONARE A CONCURSULUI
