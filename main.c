@@ -24,68 +24,43 @@ void errorInput(int argc, char *argv[])
     }
 }
 
-int* taskInput(char *fisier)
-{
-    FILE *f = fopen(fisier, "rt");
-    if(!f)
-    {
-        printf("nu s-a putut deschide fisierul %s\n", fisier);
-        exit(1);
-    }
-
-    int *v = (int*)malloc(sizeof(int) * 5);
-    if(!v)
-    {
-        printf("variabilei v nu i s-a putut aloca memorie\n");
-        exit(1);
-    }
-
-    for(register int  i = 0; i < 5; i++)
-        fscanf(f, "%d", &v[i]);
-    fclose(f);
-
-    if(!v[0])
-    {
-        printf("nu exista date de intrare\n");
-        free(v);
-        exit(1);
-    }
-
-    return v;
-}
-
 int main(int argc, char *argv[])
 {
     errorInput(argc, argv);
-    int *task = taskInput(argv[1]);
     TeamList *lista_echipe = NULL, *lista_finala = NULL;
     Tree *root = NULL;
-    int numar_echipe = -1;
+    int numar_echipe = -1, x;
 
-    for(register int i = 0; i < 5; i++)
-        if(task[i])
+    FILE *task = fopen(argv[1], "rt");
+    if(!task)
+    {
+        printf("nu s-a putut deschide fisierul %s\n", argv[1]);
+        return 1;
+    }
+
+    for(register int i = 1; fscanf(task, "%d", &x) != EOF; i++)
+        if(x)
             switch(i)
             {
-                case 0:
+                case 1:
                     task1(&lista_echipe, &numar_echipe, argv);
                     break;
-                case 1:
+                case 2:
                     task2(&lista_echipe, &numar_echipe, argv);
                     break;
-                case 2:
+                case 3:
                     task3(lista_echipe, &lista_finala, numar_echipe, argv);
                     break;
-                case 3:
+                case 4:
                     task4(lista_finala, &root, argv);
                     break;
-                // case 4:
-                //     task5();
-                //     break;
+                case 5:
+                    task5(&root, argv);
+                    break;
             }
+    fclose(task);
 
-    free(task);
     delTree(&root);
-    delTeamList(&lista_echipe, 1);
-    delTeamList(&lista_finala, 0);
+    delTeamList(&lista_echipe, 1); delTeamList(&lista_finala, 0);
     return 0;
 }
