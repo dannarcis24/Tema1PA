@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 {
     errorInput(argc, argv);
     TeamList *lista_echipe = NULL, *lista_finala = NULL;
-    Tree *root = NULL;
+    Tree *root = NULL, *AVL = NULL;
     int numar_echipe = -1, x;
 
     FILE *task = fopen(argv[1], "rt");
@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
         printf("nu s-a putut deschide fisierul %s\n", argv[1]);
         return 1;
     }
-
     for(register int i = 1; fscanf(task, "%d", &x) != EOF; i++)
         if(x)
             switch(i)
@@ -55,12 +54,13 @@ int main(int argc, char *argv[])
                     task4(lista_finala, &root, argv);
                     break;
                 case 5:
-                    task5(&root, argv);
+                    task5(&AVL, root, argv);
                     break;
             }
     fclose(task);
 
     delTree(&root);
-    delTeamList(&lista_echipe, 1); delTeamList(&lista_finala, 0);
+    delTree(&AVL);
+    delTeamList(&lista_echipe, 1);  delTeamList(&lista_finala, 0);
     return 0;
 }
