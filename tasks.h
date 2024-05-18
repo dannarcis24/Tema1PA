@@ -5,4 +5,4 @@ void task1(TeamList**, int*, char*[]);
 void task2(TeamList**, int*, char*[]);
 void task3(TeamList*, TeamList**, int, char*[]);
 void task4(TeamList*, Tree**, char*[]);
-// void task5
+void task5(Tree**, char*[]);
