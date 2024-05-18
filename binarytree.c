@@ -70,6 +70,19 @@ void writeTree(Tree *root, FILE *f)
     }
 }
 
+void writeLevel2(Tree *root, int nivel, FILE *f)
+{
+    if(!nivel)
+        fprintf(f, "%s\n", root->val->echipa->nume_echipa);
+    else
+    {
+        nivel--;
+        writeLevel2(root->right, nivel, f);
+        writeLevel2(root->left, nivel, f);
+    }
+}
+
+
 int height(Tree *root)
 {
     if(!root)
@@ -93,9 +106,84 @@ void calcHeight(Tree *root)
     }
 }
 
-void createAVL(Tree **root)
+Tree* isBalanced(Tree *root)
 {
+    if(!root)
+        return NULL;
+
+    if(root->height > 1 || root->height < -1)
+        return root;
+    
+    Tree *left = isBalanced(root->left);
+    if(left)
+        return left;
+    
+    Tree *right = isBalanced(root->right);
+    return right;
+}
+
+Tree* searchFather(Tree *root, Tree *nod)
+{
+    if(!root)
+        return NULL;
+
+    if(root->left == nod || root->right == nod)
+        return root;
+
+    if(root->left)
+        return searchFather(root->left, nod);
+    if(root->right)
+        return searchFather(root->right, nod);
+}
+
+Tree* leftRotation(Tree *root)
+{
+    Tree *a = root->right;
+    Tree *b = root->left;
+
+    a->left = root;
+    root->right = b;
+
+    return a;
+}
+
+Tree* rightRotation(Tree *root)
+{
+    Tree *a = root->left;
+    Tree *b = root->right;
+
+    a->right = root;
+    root->left = b;
+
+    return a;
+}
+
+void createAVL(Tree **root) {
+    if (!(*root))
+        return;
+
     calcHeight(*root);
+    Tree *nod = NULL;
+    while ((nod = isBalanced(*root))) {
+        Tree *tata = searchFather(*root, nod);
+
+        Tree *rotatie = NULL;
+        if(nod->height > 1) 
+            rotatie = rightRotation(nod);
+        else 
+            if(nod->height < -1) 
+                rotatie = leftRotation(nod);
+
+        if (tata == NULL) 
+            *root = rotatie;
+        else
+            if (tata->left == nod)
+                tata->left = rotatie;
+            else 
+                tata->right = rotatie;
+
+        calcHeight(*root);
+    }
 }
 
 void delTree(Tree **root)
@@ -106,5 +194,6 @@ void delTree(Tree **root)
         delTree(&(*root)->right);
 
         free(*root);
+        *root = NULL;
     }
 }
