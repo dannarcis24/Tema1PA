@@ -30,4 +30,19 @@ void task4(TeamList* list, Tree **root, char *argv[])
     writeTree(*root, f);
     fclose(f);
 }
-// void task5()
+
+void task5(Tree **root, char *argv[])
+{
+    createAVL(root);
+
+    FILE *f = fopen(argv[3], "at");
+    if(!f)
+    {
+        printf("nu s-a putut deschide fisierul %s\n", argv[3]);
+        exit(1);
+    }
+    
+    fprintf(f, "\nTHE LEVEL 2 TEAMS ARE:\n");
+    writeLevel2(*root, 2, f);
+    fclose(f);
+}
