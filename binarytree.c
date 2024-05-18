@@ -26,19 +26,19 @@ int verifOrd(Team *elem1, Team *elem2)
             return (strcmp(elem1->nume_echipa, elem2->nume_echipa)>0 ? 1 : 0);
 }
 
-void addInTree(Tree *root, TeamList *elem)
+void addInBST(Tree *root, TeamList *elem)
 {
     if(!root)
         return;
 
-    if(verifOrd(root->val->echipa, elem->echipa))
+    if(!verifOrd(((TeamList*)root->val)->echipa, elem->echipa))
         if(!root->left)
         {
             root->left = createTree();
             root->left->val = elem;
         }
         else
-            addInTree(root->left, elem);
+            addInBST(root->left, elem);
     else
         if(!root->right)
         {
@@ -46,16 +46,16 @@ void addInTree(Tree *root, TeamList *elem)
             root->right->val = elem;
         }
         else
-            addInTree(root->right, elem);
+            addInBST(root->right, elem);
 }
 
-Tree* createBinarySearchTree(TeamList *list)
+Tree* createBST(TeamList *list)
 {
     Tree *root = createTree();
     root->val = list;
 
     for(register TeamList *p = list->next; p; p = p->next)
-            addInTree(root, p);
+            addInBST(root, p);
 
     return root;
 }
@@ -64,24 +64,27 @@ void writeTree(Tree *root, FILE *f)
 {
     if(root)
     {
-        writeTree(root->right, f);
-        fprintf(f, "%-34s-  %.2f\n", root->val->echipa->nume_echipa, root->val->echipa->punctaj_echipa);
-        writeTree(root->left, f);    
+        writeTree(root->left, f);
+        fprintf(f, "%-34s-  %.2f\n", ((TeamList*)root->val)->echipa->nume_echipa, ((TeamList*)root->val)->echipa->punctaj_echipa);
+        writeTree(root->right, f);    
     }
 }
 
 void writeLevel2(Tree *root, int nivel, FILE *f)
 {
-    if(!nivel)
-        fprintf(f, "%s\n", root->val->echipa->nume_echipa);
-    else
-    {
-        nivel--;
-        writeLevel2(root->right, nivel, f);
-        writeLevel2(root->left, nivel, f);
-    }
-}
+    if(!root)
+        return;
 
+    if(!nivel)
+        fprintf(f, "%s\n", ((TeamList*)((Tree*)root->val)->val)->echipa->nume_echipa);
+    else
+        if(nivel > 0)
+            {
+                nivel--;
+                writeLevel2(root->left, nivel, f);
+                writeLevel2(root->right, nivel, f);
+            }
+}
 
 int height(Tree *root)
 {
@@ -106,40 +109,10 @@ void calcHeight(Tree *root)
     }
 }
 
-Tree* isBalanced(Tree *root)
-{
-    if(!root)
-        return NULL;
-
-    if(root->height > 1 || root->height < -1)
-        return root;
-    
-    Tree *left = isBalanced(root->left);
-    if(left)
-        return left;
-    
-    Tree *right = isBalanced(root->right);
-    return right;
-}
-
-Tree* searchFather(Tree *root, Tree *nod)
-{
-    if(!root)
-        return NULL;
-
-    if(root->left == nod || root->right == nod)
-        return root;
-
-    if(root->left)
-        return searchFather(root->left, nod);
-    if(root->right)
-        return searchFather(root->right, nod);
-}
-
 Tree* leftRotation(Tree *root)
 {
     Tree *a = root->right;
-    Tree *b = root->left;
+    Tree *b = a->left;
 
     a->left = root;
     root->right = b;
@@ -150,7 +123,7 @@ Tree* leftRotation(Tree *root)
 Tree* rightRotation(Tree *root)
 {
     Tree *a = root->left;
-    Tree *b = root->right;
+    Tree *b = a->right;
 
     a->right = root;
     root->left = b;
@@ -158,32 +131,50 @@ Tree* rightRotation(Tree *root)
     return a;
 }
 
-void createAVL(Tree **root) {
-    if (!(*root))
-        return;
-
-    calcHeight(*root);
-    Tree *nod = NULL;
-    while ((nod = isBalanced(*root))) {
-        Tree *tata = searchFather(*root, nod);
-
-        Tree *rotatie = NULL;
-        if(nod->height > 1) 
-            rotatie = rightRotation(nod);
-        else 
-            if(nod->height < -1) 
-                rotatie = leftRotation(nod);
-
-        if (tata == NULL) 
-            *root = rotatie;
-        else
-            if (tata->left == nod)
-                tata->left = rotatie;
-            else 
-                tata->right = rotatie;
-
-        calcHeight(*root);
+void createAVL(Tree **AVL, Tree *root)
+{
+    if(root)
+    {
+        createAVL(AVL, root->left);
+        *AVL = addInAVL(*AVL, root);
+        createAVL(AVL, root->right);
     }
+}
+
+Tree* addInAVL(Tree *AVL, Tree *elem)
+{
+    if(!AVL)
+    {
+        AVL = createTree();
+        AVL->val = elem;
+        
+        return AVL;
+    }
+    
+    if(!verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+        AVL->left = addInAVL(AVL->left, elem);
+    else
+        AVL->right = addInAVL(AVL->right, elem);
+
+    calcHeight(AVL);
+    int dezechilibru = AVL->height;
+
+    if(dezechilibru > 1 && !verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+        return rightRotation(AVL);
+    if(dezechilibru < -1 && verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+        return leftRotation(AVL);
+    if(dezechilibru > 1 && verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+    {
+        AVL->left = leftRotation(AVL->left);
+        return rightRotation(AVL);
+    }
+    if(dezechilibru < -1 && !verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+    {
+        AVL->right = rightRotation(AVL->right);
+        return leftRotation(AVL);
+    }
+
+    return AVL;
 }
 
 void delTree(Tree **root)
