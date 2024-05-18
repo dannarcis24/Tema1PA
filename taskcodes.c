@@ -18,7 +18,7 @@ void task3(TeamList *list, TeamList **list_final, int numar, char *argv[])
 
 void task4(TeamList* list, Tree **root, char *argv[])
 {
-    *root = createBinarySearchTree(list);
+    *root = createBST(list);
     FILE *f = fopen(argv[3], "at");
     if(!f)
     {
@@ -31,18 +31,16 @@ void task4(TeamList* list, Tree **root, char *argv[])
     fclose(f);
 }
 
-void task5(Tree **root, char *argv[])
+void task5(Tree **AVL, Tree *root, char *argv[])
 {
-    createAVL(root);
-
+    createAVL(AVL, root);
+    
     FILE *f = fopen(argv[3], "at");
     if(!f)
     {
         printf("nu s-a putut deschide fisierul %s\n", argv[3]);
-        exit(1);
+        exit(3);
     }
-    
     fprintf(f, "\nTHE LEVEL 2 TEAMS ARE:\n");
-    writeLevel2(*root, 2, f);
-    fclose(f);
+    writeLevel2(*AVL, 2, f);
 }
