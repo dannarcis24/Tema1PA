@@ -10,19 +10,20 @@ Tree* createTree()
     
     nod->left = nod->right = NULL;
     nod->val = NULL;
+    nod->height = -1;
 
     return nod;
 }
 
 int verifOrd(Team *elem1, Team *elem2)
 {
-    if(elem1->punctaj_echipa < elem2->punctaj_echipa)
+    if(elem1->punctaj_echipa > elem2->punctaj_echipa)
         return 1;
     else
-        if(elem1->punctaj_echipa > elem2->punctaj_echipa)
+        if(elem1->punctaj_echipa < elem2->punctaj_echipa)
             return 0;
         else
-            return (strcmp(elem1->nume_echipa, elem2->nume_echipa)<0 ? 1 : 0);
+            return (strcmp(elem1->nume_echipa, elem2->nume_echipa)>0 ? 1 : 0);
 }
 
 void addInTree(Tree *root, TeamList *elem)
@@ -48,24 +49,12 @@ void addInTree(Tree *root, TeamList *elem)
             addInTree(root->right, elem);
 }
 
-TeamList* whoIsRoot(TeamList *list)
-{
-    TeamList *root = list;
-
-    for(register TeamList *p = list->next; p; p = p->next)
-        if(verifOrd(root->echipa, p->echipa))
-            root = p;
-    
-    return root;
-}
-
 Tree* createBinarySearchTree(TeamList *list)
 {
     Tree *root = createTree();
-    root->val = whoIsRoot(list);
+    root->val = list;
 
-    for(register TeamList *p = list; p; p = p->next)
-        if(root->val != p)
+    for(register TeamList *p = list->next; p; p = p->next)
             addInTree(root, p);
 
     return root;
@@ -75,10 +64,38 @@ void writeTree(Tree *root, FILE *f)
 {
     if(root)
     {
-        writeTree(root->left, f);
+        writeTree(root->right, f);
         fprintf(f, "%-34s-  %.2f\n", root->val->echipa->nume_echipa, root->val->echipa->punctaj_echipa);
-        writeTree(root->right, f);    
+        writeTree(root->left, f);    
     }
+}
+
+int height(Tree *root)
+{
+    if(!root)
+        return -1;
+
+    int hs, hd;
+    hs = height(root->left);
+    hd = height(root->right);
+
+    return 1 + ((hs > hd) ? hs : hd);
+}
+
+void calcHeight(Tree *root)
+{
+    if(root)
+    {
+        calcHeight(root->left);
+        calcHeight(root->right);
+
+        root->height = height(root->left) - height(root->right);
+    }
+}
+
+void createAVL(Tree **root)
+{
+    calcHeight(*root);
 }
 
 void delTree(Tree **root)
