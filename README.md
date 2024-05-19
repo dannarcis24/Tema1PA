@@ -23,7 +23,7 @@ In concurs sunt inscrise mai multe echipe, iar despre fiecare echipa se stiu: nu
 Acestea 2 sunt principalele 2structuri utilizate.
 
 # FUNCTIA MAIN:
-Se verifica data datele de intrare (cele 3fisiere) sunt introduse corect (.in, .in., out).                                     
+Se verifica daca datele de intrare (cele 3fisiere) sunt introduse corect (.in, .in., out).                                     
 Se initializeaza cu NULL structurile necesare rezolvarii celor 5task-uri, urmand citirea numerelor din primul fisier pentru efectuarea task-urilor.                               
 In final se dezaloca memoria pentru toate structurile si alocarile utilizate pe parcurs.    
 
