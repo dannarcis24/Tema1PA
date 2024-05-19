@@ -25,7 +25,13 @@ Acestea 2 sunt principalele 2structuri utilizate.
 # FUNCTIA MAIN:
 Se verifica data datele de intrare (cele 3fisiere) sunt introduse corect (.in, .in., out).                                     
 Se initializeaza cu NULL structurile necesare rezolvarii celor 5task-uri, urmand citirea numerelor din primul fisier pentru efectuarea task-urilor.                               
-In final se dezaloca memoria pentru toate structurile si alocarile utilizate pe parcurs.                          
+In final se dezaloca memoria pentru toate structurile si alocarile utilizate pe parcurs.    
+
+# BIBLIOTECI
+> <stdio.h>, <stdlib.h>,  <string.h> incluse in "libs.h", care este inclusa in "structs.h", care este inclusa in "tasks.h", fiind inclusa in main(); in acest mod nu este necesara folosirea pragma once si nu se dubleaza functiile 
+1. "tasks.h": toate apelurile pentru fiecare task (biblioteca principala, fiind cea, care le contine pe toate si este inclusa in main)
+2. "structs.h": toate apelurile pentru structuri (stive, cozi, arbori binari) si declararile acestora (biblioteca specializata pentru structuri, este apelata si este inclusa in "tasks.h")
+3. "libs.h": toate apelurile pentru principalele structuri (Player, Team), listele inlantuite (PlayerList, TeamList) si declararile acestora (biblioteca initiala, unde sunt incluse <stdio.h>, <stdlib.h>, <string.h>, fiind apelata in "structs.h"
 
 # TASK 1
 >Cel de-al doilea fisier este formatat astfel: pe prima linie se afla numarul de echipe, pe liniile ce urmeaza sunt informatiile legate de echipe, fiind despartite printr-un rand liber, pentru fiecare echipa este mentionat pe o linie numarul de concurenti si numele echipei, apoi numele, prenumele si punctajul fiecarui jucator pe cate o linie separata.
@@ -94,7 +100,7 @@ Se pacurge arborele in inordine din dreapta (dreapta - radacina - stanga), se va
 3. In dreapta = echipele, care sunt superioare (punctaj mai mare || punctaje egale, atunci numele echipei mai mare), astfel se va cauta primul nod nealocat, pentru a se introduce un nod nou, dupa aceasta regula.    
 Urmatorul pas este echilibrarea, in cazul, in care este dezechilibrat, prin rotatii (dreapta, stanga, dreapta-stanga, stanga-dreapta), respectand conditiile (criteriul de la task-ul 4), in acest mod ne asiguram ca arborele este binar de cautare si echilibrat.
 
-!! FUNCTIILE PENTRU TASK 5 -> binarytree.c
-!! FUNCTIILE PENTRU ARBORII AVL -> binarytree.c
+!! FUNCTIILE PENTRU TASK 5 -> binarytree.c                                      
+!! FUNCTIILE PENTRU ARBORII AVL -> binarytree.c                                                  
 
 In final se vor afisa numele echipeleor, aflate pe nivelul al doilea in acest arbore (AVL), in ordine descrescatoare, adica de la dreapta catre stanga ("THE LEVEL 2 TEAMS ARE:", format linie: "%s" pentru cate o echipa).
