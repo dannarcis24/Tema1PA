@@ -10,7 +10,7 @@ char *readString(FILE *f, int ok)
     int k = 0;
     
     fscanf(f, "%c", &c);
-    while ((ok == 1 && c != '\r') || (ok == 0 && c != ' ')) // acel '\r' mi-a mancat zilele :((((((
+    while ((ok == 1 && c != '\r') || (ok == 0 && c != ' '))
     {   
         sir[k++] = c;
         fscanf(f, "%c", &c);
