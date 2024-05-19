@@ -52,9 +52,9 @@ Dupa ce se obtine numarul de echipe cerut se vor afisa in fisierul de iesire ech
 # TASK 3
 Pentru rezolvarea celui de al treilea task, este necesara simularea meciurilor dintre echipa. Echipele vor concura 2 cate 2 (primele 2, urmatoarele 2...), in urma viictoriilor obtinute vor avea loc urmatoarele meciuri dupa aceeasi regula (primele 2, urmatoarele 2...), pana cand se decide echipa castigatoare, de asemenea este necesara retinerea echipelor, in momentul, in care ajung in ultimele 8.                   
 Criteriul de alegere al echipei castigatoare al unui meci este echipa cu punctajul cel mai mare, iar daca au punctaje egale, atunci se va alege prima echipa din lista (punctaj_echipa1 => punctaj_echipa2 ->echipa1:echipa2).
-De asemenea este necesara afisarea in fisierul de iesire al fiecarei runde ("ROUND NO:%d" ,format: "%-33s-%33s" pentru 2 echipe), dar si echipele castigatoare("WINNERS OF ROUND NO:%d", format: "%-34s-  %.2f" pentru cate o echipa).          
+De asemenea este necesara afisarea in fisierul de iesire al fiecarei runde ("ROUND NO:%d" ,format linie: "%-33s-%33s" pentru 2 echipe), dar si echipele castigatoare("WINNERS OF ROUND NO:%d", format linie: "%-34s-  %.2f" pentru cate o echipa).          
 >%-nr: formatare la stanga in nr de spatii a sirului                       
->%nrs: formatare la dreapta in nr de spatii a sirului 
+>%nrs: formatare la dreapta in nr de spatii a sirului                                     
 
 Sunt necesare implementarea unei cozi si a 2stive, acestea sunt niste liste inlantuite, care au ca element un pointer, care primeste adresa echipei din lista de echipe (TeamList), astfel nu este necesara alocarea memoriei pentru fiecare echipa introdusa intr-una din aceste structuri.
 
@@ -63,7 +63,38 @@ Sunt necesare implementarea unei cozi si a 2stive, acestea sunt niste liste inla
 !! FUNCTIILE PENTRU COADA -> queue.c                                                  
        
 Initial in coada sunt introduse toate elementele listei, apoi sunt procesate 2 cate 2 echipe distincte, pentru a stabili echipele castigatoare si echipele pierzatoare ale primei runde, toate echipele vor fi introduse pe rand in cate o stiva, prima va contine echipele castigatoare, din care vor fi extrase si adaugate in coada, pentru a urmari urmatoarele runde, iar cea de a doua coada va contine echipele invinse, care doar vor fi eliminate la finalul rundei. Rundele vor continua, pana cand numarul de echipa va fi egal cu 1, deci s-a gasit echipa castigatoare.                        
-Pentru a se retine primele 8echipe s-a creat o lista inlantuita (TeamList), pentru a se retine echipele cu punctajele acumulat pana-n acel moment, dar, pentru a nu incarca prea mult memoria, nume_echipa si lista_concurenti, va putea fi accesata prin intermediul listei initiale (*top8->echipa = *lista->echipa, adica nume_echipa si lista_concurenti sunt pointeri, care au acces la elementele din lista cu toate echipele, restul informatiilor fiind preluate, respectiv numar_concurenti, punctaj_echipa).
+Pentru a se retine primele 8echipe s-a creat o lista inlantuita (TeamList), pentru a se retine echipele cu punctajele acumulat pana-n acel moment, dar, pentru a nu incarca prea mult memoria, nume_echipa si lista_concurenti, va putea fi accesata prin intermediul listei initiale (*top8->echipa = *lista->echipa, adica nume_echipa si lista_concurenti sunt pointeri, care au acces la elementele din lista cu toate echipele, restul informatiilor fiind preluate individual, respectiv numar_concurenti, punctaj_echipa).
 
 # TASK 4
-Pentru realizarea celui de al patrulea task, este necesara crearea unui arbore binar de cautare (element_stanga < element < element_dreapta) 
+Pentru realizarea celui de al patrulea task, este necesara crearea unui arbore binar de cautare (element_stanga < element < element_dreapta), folosind lista inlantuita salvata la task 3 (primele 8echipe).     
+
+Se implementeaza un arbore binar, care are ca si campuri 3pointeri, unul va duce catre elementul din lista salvata de la task 3 (primele 8echipe), iar ceilalti 2pointeri vor retine adresele catre urmatoarele noduri ale arborelui (*left, *right), folosind aceasta metoda se salveaza memorie, nu este necesara alocarea unui camp de dimensiunea tipului elementului pe care il retine. Motiul, pentru care se foloseste void * este retine diferite tipuri de date, nu doar unul unic.
+
+>Criteriul de ordonare este luat dupa punctaj (punctaj_echipa), iar in cazul, in care punctajele sunt egale, se vor folosi ordonarea dupa numele echipei (nume_echipa).
+
+Crearea arborelui binar de cautare functioneaza dupa urmatoarele reguli:                             
+1. Radacina = capul listei (prima echipa retinuta in lista)                       
+2. In stanga = echipele, care sunt inferioare (punctaj mai mic || punctaje egale, atunci numele echipei mai mic)                           
+3. In dreapta = echipele, care sunt superioare (punctaj mai mare || punctaje egale, atunci numele echipei mai mare), astfel se va cauta primul nod nealocat, pentru a se introduce un nod nou, dupa aceasta regula.
+
+!! FUNCTIILE PENTRU TASK 4 -> binarytree.c                         
+!! FUNCTIILE PENTRU ARBORI BINARI -> binarytree.c             
+
+In final se vor afisa echipele si punctajul, in ordine descrescatoare, respectiv inordine din dreapta (dreapta - radacina - stanga), pastrand formatul de la task-ul 3 ("TOP 8 TEAMS:", format linie: "%-34s-  %.2f" pentru cate o echipa).      
+
+# TASK 5
+Pentru realizarea celui de al cincilea task, este necesara crearea unui arbore AVL (arbore binar de cautare echilibrat), bazat pe arborele anterior, de la task-ul 4 (BST).
+>Gradul de echilibru al unui nod: inaltimea subarborelui stang - inaltimea subarborelui drept.                    
+>Ca arborele sa fie echilibrat este necesar ca gradul in modul sa fie mai mic sau egal cu 1 (0 sau 1, inaltimea este un numar natural), deci daca gradul unui nod este dezechilibrat, atunci intregul arbore se va considera dezechilibrat.
+
+Pentru a se crea noul arbore, se va crea un al doilea arbore (AVL), astfel va avea ca si element un nod din arborele de la task-ul 4 (BST).
+Se pacurge arborele in inordine din dreapta (dreapta - radacina - stanga), se va introduce nodul respectiv dupa urmatoarele reguli (criteriul de la task-ul 4):
+1. Radacina = capul listei (prima echipa retinuta in lista)                       
+2. In stanga = echipele, care sunt inferioare (punctaj mai mic || punctaje egale, atunci numele echipei mai mic)                           
+3. In dreapta = echipele, care sunt superioare (punctaj mai mare || punctaje egale, atunci numele echipei mai mare), astfel se va cauta primul nod nealocat, pentru a se introduce un nod nou, dupa aceasta regula.    
+Urmatorul pas este echilibrarea, in cazul, in care este dezechilibrat, prin rotatii (dreapta, stanga, dreapta-stanga, stanga-dreapta), respectand conditiile (criteriul de la task-ul 4), in acest mod ne asiguram ca arborele este binar de cautare si echilibrat.
+
+!! FUNCTIILE PENTRU TASK 5 -> binarytree.c
+!! FUNCTIILE PENTRU ARBORII AVL -> binarytree.c
+
+In final se vor afisa numele echipeleor, aflate pe nivelul al doilea in acest arbore (AVL), in ordine descrescatoare, adica de la dreapta catre stanga ("THE LEVEL 2 TEAMS ARE:", format linie: "%s" pentru cate o echipa).
