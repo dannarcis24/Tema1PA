@@ -31,7 +31,7 @@ void addInBST(Tree *root, TeamList *elem)
     if(!root)
         return;
 
-    if(!verifOrd(((TeamList*)root->val)->echipa, elem->echipa))
+    if(verifOrd(((TeamList*)root->val)->echipa, elem->echipa))
         if(!root->left)
         {
             root->left = createTree();
@@ -64,9 +64,9 @@ void writeTree(Tree *root, FILE *f)
 {
     if(root)
     {
-        writeTree(root->left, f);
+        writeTree(root->right, f);
         fprintf(f, "%-34s-  %.2f\n", ((TeamList*)root->val)->echipa->nume_echipa, ((TeamList*)root->val)->echipa->punctaj_echipa);
-        writeTree(root->right, f);    
+        writeTree(root->left, f);    
     }
 }
 
@@ -81,8 +81,8 @@ void writeLevel2(Tree *root, int nivel, FILE *f)
         if(nivel > 0)
             {
                 nivel--;
-                writeLevel2(root->left, nivel, f);
                 writeLevel2(root->right, nivel, f);
+                writeLevel2(root->left, nivel, f);
             }
 }
 
@@ -135,9 +135,9 @@ void createAVL(Tree **AVL, Tree *root)
 {
     if(root)
     {
-        createAVL(AVL, root->left);
-        *AVL = addInAVL(*AVL, root);
         createAVL(AVL, root->right);
+        *AVL = addInAVL(*AVL, root);
+        createAVL(AVL, root->left);
     }
 }
 
@@ -151,7 +151,7 @@ Tree* addInAVL(Tree *AVL, Tree *elem)
         return AVL;
     }
     
-    if(!verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+    if(verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
         AVL->left = addInAVL(AVL->left, elem);
     else
         AVL->right = addInAVL(AVL->right, elem);
@@ -159,16 +159,16 @@ Tree* addInAVL(Tree *AVL, Tree *elem)
     calcHeight(AVL);
     int dezechilibru = AVL->height;
 
-    if(dezechilibru > 1 && !verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
-        return rightRotation(AVL);
-    if(dezechilibru < -1 && verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
-        return leftRotation(AVL);
     if(dezechilibru > 1 && verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+        return rightRotation(AVL);
+    if(dezechilibru < -1 && !verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+        return leftRotation(AVL);
+    if(dezechilibru > 1 && !verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
     {
         AVL->left = leftRotation(AVL->left);
         return rightRotation(AVL);
     }
-    if(dezechilibru < -1 && !verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+    if(dezechilibru < -1 && verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
     {
         AVL->right = rightRotation(AVL->right);
         return leftRotation(AVL);
