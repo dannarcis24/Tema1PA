@@ -27,7 +27,7 @@ Se verifica data datele de intrare (cele 3fisiere) sunt introduse corect (.in, .
 Se initializeaza cu NULL structurile necesare rezolvarii celor 5task-uri, urmand citirea numerelor din primul fisier pentru efectuarea task-urilor.                               
 In final se dezaloca memoria pentru toate structurile si alocarile utilizate pe parcurs.    
 
-# BIBLIOTECI
+# BIBLIOTECI:
 > <stdio.h>, <stdlib.h>,  <string.h> incluse in "libs.h", care este inclusa in "structs.h", care este inclusa in "tasks.h", fiind inclusa in main(); in acest mod nu este necesara folosirea pragma once si nu se dubleaza functiile 
 1. "tasks.h": toate apelurile pentru fiecare task (biblioteca principala, fiind cea, care le contine pe toate si este inclusa in main)
 2. "structs.h": toate apelurile pentru structuri (stive, cozi, arbori binari) si declararile acestora (biblioteca specializata pentru structuri, este apelata si este inclusa in "tasks.h")
