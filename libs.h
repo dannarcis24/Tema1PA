@@ -46,7 +46,7 @@ void delTeamList(TeamList**, int);
 //        (generarea listei principale, afisarea echipelor)
 TeamList* Input(char*, int*);
 void writeTeams(TeamList*, char*);
-void delTeams(TeamList**, int*);
+void delTeams(TeamList**, int*); // numar echipe putere a lui 2 si stergerea echipelor cu punctaj minim, daca este cazul
 
 // APELURI PENTRU FUNCTII CU DIVERSE CALCULE
 int sumPoints(PlayerList*);
