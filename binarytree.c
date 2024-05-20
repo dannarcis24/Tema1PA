@@ -15,7 +15,7 @@ Tree* createTree()
     return nod;
 }
 
-int verifOrd(Team *elem1, Team *elem2)
+int verifOrd(Team *elem1, Team *elem2) // stabilirea ordinii pentru adaugarea in arbore
 {
     if(elem1->punctaj_echipa > elem2->punctaj_echipa)
         return 1;
@@ -31,14 +31,14 @@ void addInBST(Tree *root, TeamList *elem)
     if(!root)
         return;
 
-    if(verifOrd(((TeamList*)root->val)->echipa, elem->echipa))
+    if(verifOrd(((TeamList*)root->val)->echipa, elem->echipa)) // respectarrea ordinii
         if(!root->left)
         {
             root->left = createTree();
             root->left->val = elem;
         }
         else
-            addInBST(root->left, elem);
+            addInBST(root->left, elem); // se cauta primul nod nealocat, pentru a se introduce echipa
     else
         if(!root->right)
         {
@@ -60,7 +60,7 @@ Tree* createBST(TeamList *list)
     return root;
 }
 
-void writeTree(Tree *root, FILE *f)
+void writeTree(Tree *root, FILE *f) // parcurgere: inordine din dreapta, adica dreapta - radacina - stanga
 {
     if(root)
     {
@@ -70,7 +70,7 @@ void writeTree(Tree *root, FILE *f)
     }
 }
 
-void writeLevel2(Tree *root, int nivel, FILE *f)
+void writeLevel2(Tree *root, int nivel, FILE *f) // afisarea nivelului 2, incepand din dreapta
 {
     if(!root)
         return;
@@ -98,11 +98,11 @@ int height(Tree *root)
     return 1 + ((hs > hd) ? hs : hd);
 }
 
-void calcHeight(Tree *root)
+void calcHeight(Tree *root) // calcularea gradului de echilibru pentru fiecare nod
 {
     if(root)
     {
-        calcHeight(root->left);
+        calcHeight(root->left); // parcurgere: postordine
         calcHeight(root->right);
 
         root->height = height(root->left) - height(root->right);
@@ -131,17 +131,17 @@ Tree* rightRotation(Tree *root)
     return a;
 }
 
-void createAVL(Tree **AVL, Tree *root)
+void createAVL(Tree **AVL, Tree *root) // pentru crearea AVL se vor introuduce pe rand toate nodurile
 {
     if(root)
     {
-        createAVL(AVL, root->right);
+        createAVL(AVL, root->right); // parcurgere: inordine din dreapta, adica dreapta - radacina - stanga
         *AVL = addInAVL(*AVL, root);
         createAVL(AVL, root->left);
     }
 }
 
-Tree* addInAVL(Tree *AVL, Tree *elem)
+Tree* addInAVL(Tree *AVL, Tree *elem) // in urma intoarcerii din recursivitate arborele la pasul respectiv va fi echilibrat
 {
     if(!AVL)
     {
@@ -151,15 +151,15 @@ Tree* addInAVL(Tree *AVL, Tree *elem)
         return AVL;
     }
     
-    if(verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
-        AVL->left = addInAVL(AVL->left, elem);
+    if(verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa)) // se adauga nodul in arbore la fiecare pas, cand gaseste pozitie libera si corecta, conform regulii
+        AVL->left = addInAVL(AVL->left, elem); // in momentul intoarcerii din recursivitate se reface legatura, daca a avut loc vreo rotatie
     else
         AVL->right = addInAVL(AVL->right, elem);
 
     calcHeight(AVL);
-    int dezechilibru = AVL->height;
+    int dezechilibru = AVL->height; // se stabileste gradul de echilibru al nodului
 
-    if(dezechilibru > 1 && verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
+    if(dezechilibru > 1 && verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa)) // se executa o rotatie specifica dezechilibrului format
         return rightRotation(AVL);
     if(dezechilibru < -1 && !verifOrd(((TeamList*)(((Tree*)AVL->val)->val))->echipa, ((TeamList*)elem->val)->echipa))
         return leftRotation(AVL);
