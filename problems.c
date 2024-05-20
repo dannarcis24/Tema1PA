@@ -1,10 +1,10 @@
 #include "structs.h"
-TeamList* whoWins(TeamList *list1, TeamList *list2)
+TeamList* whoWins(TeamList *list1, TeamList *list2) // verificare echipei castigatoare
 {
     return ((list1->echipa->punctaj_echipa > list2->echipa->punctaj_echipa) ? list1 : list2);
 }
 
-void addPoints(Team *list)
+void addPoints(Team *list) 
 {
     list->punctaj_echipa++;
     for(register PlayerList *p = list->lista_concurenti; p; p = p->next)
@@ -15,14 +15,14 @@ void match(Queue **q, Node **castigatori, Node **pierzatori)
 {
     TeamList *echipa1, *echipa2;
 
-    while((*q)->first)
+    while((*q)->first) // efectuarea meciurilor va avea loc atat timp cat mai exista echipe in coada
     {
         echipa1 = deQueue(*q);
         echipa2 = deQueue(*q);
 
         TeamList *victorie = whoWins(echipa1, echipa2);
         addPoints(victorie->echipa);
-        if(victorie == echipa1)
+        if(victorie == echipa1) // echipa, care a invins, este introdusa in stiva de castigatori, pe cand cealalta echipa este introdusa in stiva de pierzatori
         {
             push(castigatori, echipa1);
             push(pierzatori, echipa2);
@@ -33,7 +33,7 @@ void match(Queue **q, Node **castigatori, Node **pierzatori)
             push(pierzatori, echipa1);
         }
     }
-    delQueue(q);
+    delQueue(q); // fiind goala, coada este stearsa pana la urmatorul meci, cand are loc creare noii liste de meciuri
 }
 
 void writeRound(Queue *q, int runda, char *fisier)
@@ -83,18 +83,18 @@ TeamList* top8(TeamList* list, int numar, char *argv[])
         Node *castigatori = NULL, *pierzatori = NULL;
         match(&q, &castigatori, &pierzatori);
         writeWinners(castigatori, runda, argv[3]);
-        q = createQueue();
+        q = createQueue(); // se creaza coada, pentru inceperea unui nou meci
 
         numar /= 2;
         for(register Node *p = castigatori; p; p = p->next)
         {
             enQueue(q, p->echipa);
-            if(numar == 8)
-                copyTeam(&lista_finala, p->echipa->echipa);
+            if(numar == 8) // in cazul, in care au ramas ultimii 8, echipele sunt salvate cu punctajul curent
+                copyTeam(&lista_finala, p->echipa->echipa); 
         }
 
         runda++;
-        delStack(&castigatori);
+        delStack(&castigatori); // stivele sunt sterse pana la inceperea unei noi runde
         delStack(&pierzatori);
     }
 
