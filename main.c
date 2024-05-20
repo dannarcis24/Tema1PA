@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     for(register int i = 1; fscanf(task, "%d", &x) != EOF; i++)
-        if(x)
+        if(x) // != 0 se va executa task-ul, == 0 nu se va executa task-ul
             switch(i)
             {
                 case 1:
