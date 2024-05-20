@@ -1,7 +1,7 @@
 #include "libs.h"
 
 // TIPURILE DE STRUCT
-//        (stiva, coada)
+//        (stiva, coada, arbore binar)
 typedef struct c{
     TeamList *echipa;
     struct c *next;
@@ -20,32 +20,36 @@ typedef struct e{
 // APELURI PENTRU FUNCTII DE GESTIONARE A UNEI STIVE
 //        (creare, adaugare, extragere, stergere)
 Node* createNode();
-void push(Node**, TeamList*);
-TeamList* pop(Node**);
+void push(Node**, TeamList*); // se adauga element la inceput
+TeamList* pop(Node**); // se extrage element de la inceput
 void delStack(Node**);
 
 // APELURI PENTRU FUNCTII DE GESTIONARE A UNEI COZI
 //        (creare, adaugare, extragere, stergere)
 Queue* createQueue();
-void enQueue(Queue*, TeamList*);
-TeamList* deQueue(Queue*);
+void enQueue(Queue*, TeamList*); // se adauga element la final
+TeamList* deQueue(Queue*); // se extrage element de la inceput
 void delQueue(Queue**);
 
-//APELURI PENTRU FUNCTII DE GESTIONARE A UNUI ARBORE BINAR
-//        (creari nod/BST/AVL, verificari, calcularea inaltimii, adaugari, rotatii stanga/dreapta, afisari, stergere)
+// APELURI PENTRU FUNCTII DE GESTIONARE A UNUI ARBORE BINAR
+//        (creare, verificare, calcularea inaltimii, scriere, stergere)
 Tree* createTree();
-Tree* createBST(TeamList*);
-void createAVL(Tree **, Tree*);
-void addInBST(Tree*, TeamList*);
-Tree* addInAVL(Tree *, Tree*);
-int verifOrd(Team*, Team*);
+int verifOrd(Team*, Team*); // se aplica pentru BST/AVL
 int height(Tree*);
 void calcHeight(Tree*);
-Tree* leftRotation(Tree*);
-Tree* rightRotation(Tree*);
-void writeTree(Tree*, FILE*); // parcurgerea in inordine
+void writeTree(Tree*, FILE*); // parcurgerea in inordine de la dreapta (dreapta - radacina - stanga)
 void writeLevel2(Tree*, int, FILE*);
 void delTree(Tree**);
+// APELURI PENTRU FUNCTII DE GESTIONARE BST
+//        (creare, adaugare)
+Tree* createBST(TeamList*);
+void addInBST(Tree*, TeamList*);
+// APELURI PENTRU FUNCTII DE GESTIONARE AVL
+//        (creare, adaugare, rotatii)
+void createAVL(Tree**, Tree*);
+Tree* addInAVL(Tree*, Tree*);
+Tree* leftRotation(Tree*);
+Tree* rightRotation(Tree*);
 
 // APELURI PENTRU FUNCTII DE GESTIONARE A CONCURSULUI
 TeamList* whoWins(TeamList*, TeamList*);
