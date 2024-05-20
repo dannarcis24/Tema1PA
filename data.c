@@ -1,5 +1,5 @@
 #include "tasks.h"
-char *readString(FILE *f, int ok)
+char *readString(FILE *f, int ok) //citirea sirurilor se face parcurgand carcter cu caracter fisierul
 {
     char c, *sir = (char *)malloc(sizeof(char));
     if (!sir)
@@ -10,7 +10,7 @@ char *readString(FILE *f, int ok)
     int k = 0;
     
     fscanf(f, "%c", &c);
-    while ((ok == 1 && c != '\r') || (ok == 0 && c != ' '))
+    while ((ok == 1 && c != '\r') || (ok == 0 && c != ' ')) // 1- nume_echipa, 0- nume/prenume (se tine cont de pozitia din fisier)
     {   
         sir[k++] = c;
         fscanf(f, "%c", &c);
@@ -25,7 +25,7 @@ char *readString(FILE *f, int ok)
             break;
     }
     sir[k] = '\0';
-    if(sir[strlen(sir)-1] == ' ')
+    if(sir[strlen(sir)-1] == ' ') // se sterge potentialul spatiu de la finalul unui cuvant (caz specific: nume_echipa)
     {
         sir[--k] = '\0';
         sir = (char *)realloc(sir, sizeof(char) * (k + 1));
@@ -51,7 +51,7 @@ TeamList *Input(char *fisier, int *numar_echipe)
     fscanf(f, "%d", numar_echipe);
 
     TeamList *lista_echipe = createTeamList();
-    for (register int i = 0; i < *numar_echipe; i++)
+    for (register int i = 0; i < *numar_echipe; i++) // fseek(...) tin cont de formatarea fisierului
     {
         Team *grup = createTeam();
         grup->lista_concurenti = createPlayerList();
@@ -72,7 +72,7 @@ TeamList *Input(char *fisier, int *numar_echipe)
 
             addPlayer(&grup->lista_concurenti, jucator);
         }
-        addTeam(&lista_echipe, grup);
+        addTeam(&lista_echipe, grup); // in cele 2liste inlantuite se vor retine adresele catre grup, jucator (la fiecare pas)
     }
     fclose(f);
 
@@ -125,8 +125,8 @@ void minimum(TeamList *list, float *mi)
 
 void delTeams(TeamList **list, int *numar)
 {
-    for(register TeamList *p = *list; p; p = p->next)
-        p->echipa->punctaj_echipa = 1.* sumPoints(p->echipa->lista_concurenti)/p->echipa->numar_concurenti;
+    for(register TeamList *p = *list; p; p = p->next) // calcularea punctajului echipelor bazat pe punctajele individuale ale jucatorilor (media aritmetica, conversie float)
+        p->echipa->punctaj_echipa = 1.* sumPoints(p->echipa->lista_concurenti)/p->echipa->numar_concurenti; 
 
     if(twoPower(*numar))
         return;
