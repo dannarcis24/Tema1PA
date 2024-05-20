@@ -1,7 +1,7 @@
 #include "tasks.h"
 void task1(TeamList **list, int *numar, char *argv[])
 {
-    *list = Input(argv[2], numar);
+    *list = Input(argv[2], numar); // citirea informatiilor pentru fiecare echipa
     writeTeams(*list, argv[3]);
 }
 
@@ -13,7 +13,7 @@ void task2(TeamList **list, int *numar, char *argv[])
 
 void task3(TeamList *list, TeamList **list_final, int numar, char *argv[])
 {
-    *list_final = top8(list, numar, argv);
+    *list_final = top8(list, numar, argv); // retinerea primelor 8echipe din clasament
 }
 
 void task4(TeamList* list, Tree **root, char *argv[])
